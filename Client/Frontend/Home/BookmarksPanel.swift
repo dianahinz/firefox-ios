@@ -34,7 +34,7 @@ struct BookmarksPanelUX {
     private static let SeparatorRowHeight: CGFloat = 0.5
 }
 
-class BookmarksPanel: SiteTableViewController, HomePanel {
+class BookmarksPanel: HistoryTableViewController, HomePanel {
     weak var homePanelDelegate: HomePanelDelegate? = nil
     var source: BookmarksModel?
     var parentFolders = [BookmarkFolder]()
@@ -45,10 +45,6 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
     private let BookmarkSeparatorCellIdentifier = "BookmarkSeparatorIdentifier"
     private let BookmarkFolderHeaderViewIdentifier = "BookmarkFolderHeaderIdentifier"
 
-    private lazy var defaultIcon: UIImage = {
-        return UIImage(named: "defaultFavicon")!
-    }()
-    
     init() {
         super.init(nibName: nil, bundle: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(BookmarksPanel.notificationReceived(_:)), name: NotificationFirefoxAccountChanged, object: nil)
@@ -195,7 +191,12 @@ class BookmarksPanel: SiteTableViewController, HomePanel {
             if let url = bookmark.favicon?.url.asURL where url.scheme == "asset" {
                 cell.imageView?.image = UIImage(named: url.host!)
             } else {
-                cell.imageView?.setIcon(bookmark.favicon, withPlaceholder: self.defaultIcon)
+                if let bookmarkURL = NSURL(string: item.url) {
+                    cell.imageView?.setIcon(bookmark.favicon, withPlaceholder: FaviconFetcher.getDefaultFavicon(bookmarkURL))
+                } else {
+                    // Send an empty URL to getDefaulFavicon in order to return the globe icon (since there is no url available)
+                    cell.imageView?.setIcon(bookmark.favicon, withPlaceholder: FaviconFetcher.defaultFavicon)
+                }
             }
             return cell
         case is BookmarkSeparator:

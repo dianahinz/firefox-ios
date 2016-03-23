@@ -72,8 +72,8 @@ class SiteTableViewHeader : UITableViewHeaderFooterView {
  * Provides base shared functionality for site rows and headers.
  */
 class SiteTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    private let CellIdentifier = "CellIdentifier"
-    private let HeaderIdentifier = "HeaderIdentifier"
+    let CellIdentifier = "CellIdentifier"
+    let HeaderIdentifier = "HeaderIdentifier"
     var profile: Profile! {
         didSet {
             reloadData()

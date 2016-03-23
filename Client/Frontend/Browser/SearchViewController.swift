@@ -52,7 +52,7 @@ protocol SearchViewControllerDelegate: class {
     func presentSearchSettingsController()
 }
 
-class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, LoaderListener {
+class SearchViewController: HistoryTableViewController, KeyboardHelperDelegate, LoaderListener {
     var searchDelegate: SearchViewControllerDelegate?
 
     private let isPrivate: Bool
@@ -63,16 +63,11 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
     private let searchEngineScrollView = ButtonScrollView()
     private let searchEngineScrollViewContent = UIView()
 
-    private lazy var defaultIcon: UIImage = {
-        return UIImage(named: "defaultFavicon")!
-    }()
-
     // Cell for the suggestion flow layout. Since heightForHeaderInSection is called *before*
     // cellForRowAtIndexPath, we create the cell to find its height before it's added to the table.
     private let suggestionCell = SuggestionCell(style: UITableViewCellStyle.Default, reuseIdentifier: nil)
 
     private var suggestionPrompt: UIView?
-
     static var userAgent: String?
 
     init(isPrivate: Bool) {
@@ -521,7 +516,7 @@ extension SearchViewController {
             if let site = data[indexPath.row] {
                 if let cell = cell as? TwoLineTableViewCell {
                     cell.setLines(site.title, detailText: site.url)
-                    cell.imageView?.setIcon(site.icon, withPlaceholder: self.defaultIcon)
+                    cell.imageView?.setIcon(site.icon, withPlaceholder: FaviconFetcher.getDefaultFavicon(site.tileURL))
                 }
             }
             return cell
