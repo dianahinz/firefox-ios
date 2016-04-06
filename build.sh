@@ -9,30 +9,30 @@ key="$1"
 counter=$((counter+1))
 echo $counter
 
-case $key in
-    -b|--branch)
-    BRANCH="$2"
-    shift # past argument
-    ;;
-    -c|--createbranch)
-    BUILD_BRANCH="$2"
-    shift # past argument
-    ;;
-    -n|--buildnumber)
-    export BUILD_NUMBER="$2"
-    shift # past argument
-    ;;
-    -v|--version)
-    export APP_VERSION="$2"
-    shift # past argument
-    ;;
-    l10n|aurora|beta|release)
-    export BUILD_FLAVOUR=$key
-    ;;
-    *)
-        echo "Unknown Option $key"    # unknown option
-    ;;
-esac
+#case $key in
+#    -b|--branch)
+#    BRANCH="$2"
+#    shift # past argument
+#    ;;
+#    -c|--createbranch)
+#    BUILD_BRANCH="$2"
+#    shift # past argument
+#    ;;
+#    -n|--buildnumber)
+#    export BUILD_NUMBER="$2"
+#    shift # past argument
+#    ;;
+#    -v|--version)
+#    export APP_VERSION="$2"
+#    shift # past argument
+#    ;;
+#    l10n|aurora|beta|release)
+#    export BUILD_FLAVOUR=$key
+#    ;;
+#    *)
+#        echo "Unknown Option $key"    # unknown option
+#    ;;
+#esac
 shift # past argument or value
 done
 
